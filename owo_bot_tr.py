@@ -353,6 +353,25 @@ async def savas(ctx, rakip: discord.Member):
     )
 
 
+# ---------------- SESİNE GİR ----------------
+@bot.command(name="sesegir", aliases=["ses", "join"])
+async def sesegir(ctx, channel_id: int):
+    channel = bot.get_channel(channel_id)
+    
+    if not channel or not isinstance(channel, discord.VoiceChannel):
+        return await ctx.reply("❌ Geçerli bir ses kanal ID'si belirtmelisin!", mention_author=False)
+    
+    try:
+        if ctx.voice_client:
+            await ctx.voice_client.move_to(channel)
+        else:
+            await channel.connect()
+            
+        await ctx.reply(f"✅ Başarıyla **{channel.name}** ses kanalına katıldım!", mention_author=False)
+    except Exception as e:
+        await ctx.reply(f"❌ Ses kanalına bağlanırken bir hata oluştu: `{e}`", mention_author=False)
+
+
 # ---------------- YARDIM ----------------
 @bot.command(name="yardim", aliases=["yardım", "help"])
 async def yardim(ctx):
@@ -389,6 +408,11 @@ async def yardim(ctx):
             f" {KALP} x12 • {PATLICAN} x6 • {CHERRY} x4\n"
             "`s!savas @kişi` (b) • En güçlü 3 hayvanla savaşırsın (20 sn bekleme)"
         ),
+        inline=False,
+    )
+    embed.add_field(
+        name="🔊 Ses",
+        value="`s!sesegir <kanal_id>` • Belirtilen ses kanalına katılır",
         inline=False,
     )
     embed.add_field(
