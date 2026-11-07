@@ -1,2 +1,4 @@
 discord.py
 flask
+py-cord-voice
+@discordjs/voice
